@@ -1,0 +1,1441 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.1
+-- Dumped by pg_dump version 13.1
+
+-- Started on 2020-12-26 03:09:40
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 236 (class 1255 OID 41627)
+-- Name: dnsmlkfrmverigir(integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.dnsmlkfrmverigir(sayi integer) RETURNS void
+    LANGUAGE plpgsql SECURITY DEFINER
+    AS $$
+BEGIN   
+    IF sayi > 0 THEN
+        FOR i IN 1 .. sayi LOOP
+            INSERT INTO "danismanlikfirmasi" ("firma_no","firma_ad", "firma_adres") 
+            VALUES(
+				 ceil(random()*1000),
+				 substring('ABCÇDEFGĞHIiJKLMNOÖPRSŞTUÜVYZ' from ceil(random()*10)::smallint for ceil(random()*20)::SMALLINT),
+                'İSTANBUL CADDESİ NO: 61 AKYOL İŞ HANI YALOVA/MERKEZ'
+                 );
+        END LOOP;
+    END IF; 
+END;
+$$;
+
+
+ALTER FUNCTION public.dnsmlkfrmverigir(sayi integer) OWNER TO postgres;
+
+--
+-- TOC entry 235 (class 1255 OID 41602)
+-- Name: hsp(integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.hsp(kayitsayisi integer) RETURNS void
+    LANGUAGE plpgsql SECURITY DEFINER
+    AS $$
+DECLARE
+	aylikglr int;
+	aylikgdr int;
+	yillikgdr int;
+	yillikglr int;
+	aylikntkar int;
+	yillikntkar int;
+BEGIN   
+    IF kayitSayisi > 0 THEN
+        FOR i IN 1 .. kayitSayisi LOOP
+			aylikglr =10000*ceil(random()*1000);
+			aylikgdr =1000*ceil(random()*1000);
+			yillikgdr =12*aylikgdr;
+			yillikglr =12*aylikglr;
+			aylikntkar=aylikglr-aylikgdr;
+			yillikntkar=yillikglr-yillikgdr;
+            INSERT INTO "gelirgider" ("aylikgelir","aylikgider","yillikgelir","yillikgider","ayliknetkar","yilliknetkar") 
+            VALUES(aylikglr,aylikgdr,yillikglr,yillikgdr,aylikntkar,yillikntkar);
+        END LOOP;
+    END IF; 
+END;
+$$;
+
+
+ALTER FUNCTION public.hsp(kayitsayisi integer) OWNER TO postgres;
+
+--
+-- TOC entry 223 (class 1255 OID 41842)
+-- Name: marka_ekle(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.marka_ekle() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    NEW."marka_ad" = UPPER(NEW."marka_ad"); 
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.marka_ekle() OWNER TO postgres;
+
+--
+-- TOC entry 237 (class 1255 OID 41816)
+-- Name: modelyildegisikligi(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.modelyildegisikligi() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW."model_yil" <> OLD."model_yil" THEN
+        INSERT INTO "aracdegisikligiizle"("arac_no", "eski_model_yil", "yeni_model_yil")
+        VALUES(OLD."arac_no", OLD."model_yil", NEW."model_yil");
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.modelyildegisikligi() OWNER TO postgres;
+
+--
+-- TOC entry 239 (class 1255 OID 41659)
+-- Name: satisHsp(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public."satisHsp"() RETURNS void
+    LANGUAGE plpgsql SECURITY DEFINER
+    AS $$
+DECLARE
+kmqFiyat int;
+xc60Fiyat int;
+micraFiyat int;
+crftrFiyat int;
+nvrFiyat int;
+BEGIN   
+			kmqFiyat=307900;
+			xc60Fiyat=779350;
+			micraFiyat=193600;
+			crftrFiyat=340000;
+			nvrFiyat=290400;
+            INSERT INTO "satislar" ("arac_no", "arac_tur_ad","marka_ad","model_ad","arac_fiyat","satilan_arac_model_adet","toplam_satis_tutar","gelir_gider_id") 
+            VALUES(10,'SUV','SKODA','KAMIQ',kmqFiyat,5,kmqFiyat*5,15);
+			
+			INSERT INTO "satislar" ("arac_no", "arac_tur_ad","marka_ad","model_ad","arac_fiyat","satilan_arac_model_adet","toplam_satis_tutar","gelir_gider_id") 
+            VALUES(19,'SUV','VOLVO','XC60',xc60Fiyat,8,xc60Fiyat*8,14);
+			
+			INSERT INTO "satislar" ("arac_no", "arac_tur_ad","marka_ad","model_ad","arac_fiyat","satilan_arac_model_adet","toplam_satis_tutar","gelir_gider_id") 
+            VALUES(33,'Hatchback 5 Kapı','NİSSAN','MİCRA',micraFiyat,20,micraFiyat*20,13);
+			
+			INSERT INTO "satislar" ("arac_no", "arac_tur_ad","marka_ad","model_ad","arac_fiyat","satilan_arac_model_adet","toplam_satis_tutar","gelir_gider_id")
+            VALUES(31,'Minivan-Panelvan-Minibüs','VOLKSWAGEN TİCARİ','CRAFTER',crftrFiyat,11,crftrFiyat*11,12);
+        
+			INSERT INTO "satislar" ("arac_no", "arac_tur_ad","marka_ad","model_ad","arac_fiyat","satilan_arac_model_adet","toplam_satis_tutar","gelir_gider_id") 
+            VALUES(36,'PİCK-UP','NİSSAN','NAVARA',nvrFiyat,9,nvrFiyat*9,11);
+END;
+$$;
+
+
+ALTER FUNCTION public."satisHsp"() OWNER TO postgres;
+
+--
+-- TOC entry 238 (class 1255 OID 41920)
+-- Name: soyad_degisikligi(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.soyad_degisikligi() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW."soyad" <> OLD."soyad" THEN
+        INSERT INTO "soyaddegisikligiizle"("personel_id", "eski_soyad", "yeni_soyad","degisiklik_tarihi")
+        VALUES(OLD."personel_id", OLD."soyad", NEW."soyad",now());
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.soyad_degisikligi() OWNER TO postgres;
+
+--
+-- TOC entry 240 (class 1255 OID 41876)
+-- Name: srvRandv(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public."srvRandv"() RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+BEGIN   
+	INSERT INTO "servisrandevu" ("randevu_no","arac_no","marka_ad", "model_ad","ad","soyad","telefon_numarasi","servis_randevu_tarih","arac_plaka") 
+    VALUES(1,10,'SKODA','KAMIQ','ADEM','AYHAN','+905343895771',NOW() + (random() * (NOW()+'365 days' - NOW())),'77AAP761');
+	
+	INSERT INTO "servisrandevu" ("randevu_no","arac_no","marka_ad", "model_ad","ad","soyad","telefon_numarasi","servis_randevu_tarih","arac_plaka") 
+    VALUES(2,19,'VOLVO','XC60','KADİR','AKY','+905343895772',NOW() + (random() * (NOW()+'365 days' - NOW())),'77AAB361');
+	
+END;
+$$;
+
+
+ALTER FUNCTION public."srvRandv"() OWNER TO postgres;
+
+--
+-- TOC entry 241 (class 1255 OID 41966)
+-- Name: yktDgsk(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public."yktDgsk"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW."yakit_ad" <> OLD."yakit_ad" THEN
+        INSERT INTO "ykt_dgsk_izle"( "eski_yakit_ad", "yeni_yakit_ad", "guncelleme_tarihi","yakit_no")
+        VALUES(OLD."yakit_no", OLD."yakit_ad", NEW."yakit_ad", now());
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public."yktDgsk"() OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 207 (class 1259 OID 33059)
+-- Name: satislar; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.satislar (
+    satislar_no integer NOT NULL,
+    arac_no integer,
+    arac_tur_ad character varying(30),
+    marka_ad character varying(30),
+    model_ad character varying(30),
+    arac_fiyat integer,
+    satilan_arac_model_adet integer,
+    toplam_satis_tutar integer,
+    gelir_gider_id integer
+);
+
+
+ALTER TABLE public.satislar OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 41640)
+-- Name: Satislar_satislarNo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Satislar_satislarNo_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Satislar_satislarNo_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3166 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: Satislar_satislarNo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Satislar_satislarNo_seq" OWNED BY public.satislar.satislar_no;
+
+
+--
+-- TOC entry 203 (class 1259 OID 32966)
+-- Name: arac; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.arac (
+    arac_no integer NOT NULL,
+    arac_tur_no integer,
+    yakit_no integer,
+    marka_no integer,
+    model_no integer,
+    model_ad character varying(30),
+    koltuk_sayisi character varying(10),
+    agirlik integer,
+    vites_tipi character varying(10),
+    renk character varying(30),
+    uretim_yeri character varying(30),
+    arac_fiyat character varying(10),
+    uretim_tarihi character varying(10),
+    gumruk_giris_tarihi character varying(10),
+    model_yil integer
+);
+
+
+ALTER TABLE public.arac OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 41820)
+-- Name: aracdegisikligiizle; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.aracdegisikligiizle (
+    arac_no integer NOT NULL,
+    eski_model_yil character varying(4) NOT NULL,
+    yeni_model_yil character varying(4) NOT NULL
+);
+
+
+ALTER TABLE public.aracdegisikligiizle OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 33133)
+-- Name: aracmarka; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.aracmarka (
+    marka_no integer NOT NULL,
+    marka_ad character varying(30)
+);
+
+
+ALTER TABLE public.aracmarka OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 32956)
+-- Name: aracmodel; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.aracmodel (
+    model_no integer NOT NULL,
+    marka_no integer,
+    model_ad character varying(30)
+);
+
+
+ALTER TABLE public.aracmodel OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 32942)
+-- Name: aractur; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.aractur (
+    arac_tur_no integer NOT NULL,
+    arac_tur_ad character varying(30)
+);
+
+
+ALTER TABLE public.aractur OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 32961)
+-- Name: aracyakit; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.aracyakit (
+    yakit_no integer NOT NULL,
+    yakit_ad character varying(30)
+);
+
+
+ALTER TABLE public.aracyakit OWNER TO postgres;
+
+--
+-- TOC entry 206 (class 1259 OID 33021)
+-- Name: bayi; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.bayi (
+    id integer NOT NULL,
+    arac_no integer,
+    stok_no integer,
+    satislar_no integer,
+    personel_id integer,
+    randevu_no integer,
+    sehir character varying(30),
+    bayi_bolge_no integer,
+    bayi_bolge_ad character varying(30),
+    bayi_ad character varying(50)
+);
+
+
+ALTER TABLE public.bayi OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 33180)
+-- Name: personel; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.personel (
+    personel_id integer NOT NULL,
+    ad character varying(30),
+    soyad character varying(30),
+    personel_tip_no integer,
+    personel_tip_ad character varying(30),
+    ucret character varying(10)
+);
+
+
+ALTER TABLE public.personel OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 33195)
+-- Name: danisman; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.danisman (
+    firma_no integer,
+    danisman_no integer
+)
+INHERITS (public.personel);
+
+
+ALTER TABLE public.danisman OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 41622)
+-- Name: danismanlikfirmasi; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.danismanlikfirmasi (
+    firma_no integer NOT NULL,
+    firma_ad character varying(30),
+    firma_adres character varying(100)
+);
+
+
+ALTER TABLE public.danismanlikfirmasi OWNER TO postgres;
+
+--
+-- TOC entry 214 (class 1259 OID 41586)
+-- Name: gelirgider; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.gelirgider (
+    id integer NOT NULL,
+    aylikgelir integer,
+    yillikgelir integer,
+    aylikgider integer,
+    yillikgider integer,
+    ayliknetkar integer,
+    yilliknetkar integer
+);
+
+
+ALTER TABLE public.gelirgider OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 41584)
+-- Name: gelirgider_ID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."gelirgider_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."gelirgider_ID_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3167 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: gelirgider_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."gelirgider_ID_seq" OWNED BY public.gelirgider.id;
+
+
+--
+-- TOC entry 210 (class 1259 OID 33185)
+-- Name: kadrolu; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.kadrolu (
+    kadro_no integer
+)
+INHERITS (public.personel);
+
+
+ALTER TABLE public.kadrolu OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 41844)
+-- Name: randevu; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.randevu (
+    randevu_no integer NOT NULL,
+    arac_no integer,
+    marka_ad character varying(30),
+    model_ad character varying(30),
+    ad character varying(30),
+    soyad character varying(30),
+    telefon_numarasi character varying(13)
+);
+
+
+ALTER TABLE public.randevu OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 33011)
+-- Name: servis; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.servis (
+    servis_no integer NOT NULL,
+    arac_no integer,
+    marka_ad character varying(30),
+    arac_tur_ad character varying(30),
+    model character varying(30),
+    renk character varying(30),
+    yakit_ad character varying(30),
+    plaka character varying(15),
+    arac_km_bilgisi character varying(15),
+    model_yili character varying(4),
+    servis_ucret_tip_no integer,
+    servis_ucret_tip_ad character varying(30),
+    servis_ucret integer,
+    hasar_kaydi_orani integer
+);
+
+
+ALTER TABLE public.servis OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 41849)
+-- Name: servisrandevu; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.servisrandevu (
+    arac_plaka character varying(15),
+    servis_randevu_tarih character varying(25)
+)
+INHERITS (public.randevu);
+
+
+ALTER TABLE public.servisrandevu OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 41917)
+-- Name: soyaddegisikligiizle; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.soyaddegisikligiizle (
+    personel_id integer NOT NULL,
+    eski_soyad character varying(30) NOT NULL,
+    yeni_soyad character varying(30) NOT NULL,
+    degisiklik_tarihi timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.soyaddegisikligiizle OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 33190)
+-- Name: sozlesmeli; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sozlesmeli (
+    sozlesme_no integer
+)
+INHERITS (public.personel);
+
+
+ALTER TABLE public.sozlesmeli OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 32995)
+-- Name: stok; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.stok (
+    stok_no integer NOT NULL,
+    arac_no integer,
+    arac_tur_no character varying(4),
+    marka_ad character varying(30),
+    model_ad character varying(30),
+    vites_tipi character varying(10),
+    model_yili character varying(4),
+    stok_miktari integer,
+    arac_fiyat character varying(15),
+    stok_guncelleme_tarihi character varying(10)
+);
+
+
+ALTER TABLE public.stok OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 41854)
+-- Name: testsurusrandevu; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.testsurusrandevu (
+    test_arac_plaka character varying(15),
+    test_surus_randevu_tarih character varying(25)
+)
+INHERITS (public.randevu);
+
+
+ALTER TABLE public.testsurusrandevu OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 41963)
+-- Name: ykt_dgsk_izle; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ykt_dgsk_izle (
+    eski_yakit_ad real NOT NULL,
+    yeni_yakit_ad real NOT NULL,
+    guncelleme_tarihi timestamp without time zone NOT NULL,
+    yakit_no integer
+);
+
+
+ALTER TABLE public.ykt_dgsk_izle OWNER TO postgres;
+
+--
+-- TOC entry 2941 (class 2604 OID 41589)
+-- Name: gelirgider id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.gelirgider ALTER COLUMN id SET DEFAULT nextval('public."gelirgider_ID_seq"'::regclass);
+
+
+--
+-- TOC entry 2940 (class 2604 OID 41642)
+-- Name: satislar satislar_no; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.satislar ALTER COLUMN satislar_no SET DEFAULT nextval('public."Satislar_satislarNo_seq"'::regclass);
+
+
+--
+-- TOC entry 3141 (class 0 OID 32966)
+-- Dependencies: 203
+-- Data for Name: arac; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.arac (arac_no, arac_tur_no, yakit_no, marka_no, model_no, model_ad, koltuk_sayisi, agirlik, vites_tipi, renk, uretim_yeri, arac_fiyat, uretim_tarihi, gumruk_giris_tarihi, model_yil) FROM stdin;
+1	22	1	1	1	A1	5	1125	Otomatik	Beyaz	BELÇİKA	380.000	03.2020	04.2020	2020
+2	22	1	1	2	A3 	5	1250	Otomatik	Kırmızı	ALMANYA	438.560	11.2019	01.2020	2021
+3	21	1	1	3	A4	5	1660	Otomatik	Siyah	ALMANYA	891.103	11.2019	01.2020	2019
+4	24	1	1	4	A5	5	1600	Otomatik	Kırmızı	ALMANYA	1.013.233	11.2019	01.2020	2019
+5	21	2	1	5	A6	5	1705	Otomatik	Siyah	ALMANYA	1.070.168	11.2019	01.2020	2019
+6	22	3	1	6	A7	5	1760	Otomatik	Siyah	ALMANYA	1.774.051	01.2020	03.2020	2020
+7	21	3	1	7	A8	5	2000	Otomatik	Siyah	ALMANYA	2.959.715	01.2020	03.2020	2020
+8	22	1	2	8	SCALA	5	1229	Otomatik	Beyaz	ÇEK CUMHURİYETİ	224.900	07.2020	09.2020	2020
+9	21	1	2	9	SUPERB	5	1455	Otomatik	Siyah	ÇEK CUMHURİYETİ	364.900	07.2020	09.2020	2020
+10	28	1	2	10	KAMIQ	5	1251	Otomatik	Beyaz	ÇEK CUMHURİYETİ	307.900	07.2020	09.2020	2020
+11	28	2	2	11	KAROQ	5	1441	Otomatik	Metalik Gri	ÇEK CUMHURİYETİ	388.400	07.2020	09.2020	2020
+12	28	2	2	12	KODIAQ	5	1581	Otomatik	Mavi	ÇEK CUMHURİYETİ	889.900	07.2020	09.2020	2020
+13	22	1	3	13	IBİZA	5	1082	Manuel	Metalik Gri	İSPANYA	161.500	11.2020	11.2020	2020
+14	22	1	3	14	LEON	5	1158	Otomatik	Kırmızı	İSPANYA	251.000	06.2019	09.2019	2019
+15	28	1	3	15	ARONA	5	1135	Otomatik	Lacivert	İSPANYA	231.000	11.2020	11.2020	2020
+16	28	1	3	16	ATECA	5	1300	Otomatik	Metalik Gri	ÇEK CUMHURİYETİ	355.000	08.2020	09.2020	2020
+17	21	3	4	17	S90	5	1892	Otomatik	Siyah	ÇİN	962.250	05.2020	09.2020	2020
+18	28	3	4	18	XC40	5	1625	Otomatik	Beyaz	BELÇİKA	473.128	05.2020	09.2020	2020
+19	28	3	4	19	XC60	5	1950	Otomatik	Siyah	İSVEÇ	779.350	05.2020	09.2020	2020
+20	28	3	4	20	XC90	5	2172	Otomatik	Siyah	ABD	1.453.720	05.2020	09.2020	2020
+21	22	1	5	21	POLO	5	1180	Otomatik	Beyaz	İSPANYA	190.200	02.2020	03.2020	2020
+22	22	1	5	22	GOLF	5	1353	Otomatik	Beyaz	MEKSİKA	231.600	11.2018	12.2018	2018
+23	21	2	5	23	PASSAT	5	1459	Otomatik	Siyah	ÇEK CUMHURİYETİ	348.500	02.2020	05.2020	2020
+24	28	1	5	24	T-ROC	5	1350	Otomatik	Beyaz	PORTEKİZ	387.500	06.2020	09.2020	2020
+25	28	1	5	25	TİGUAN	5	1550	Otomatik	Beyaz	ALMANYA	435.000	07.2020	11.2020	2020
+26	28	2	5	26	TOUAREG	5	1995	Otomatik	Mavi	SLOVAKYA	2.011.000	04.2020	07.2020	2020
+27	30	2	6	27	CADDY	5	1417	Otomatik	Metalik Gri	POLONYA	228.000	02.2020	04.2020	2020
+28	30	2	6	28	TRANSPORTER	8+1	1793	Manuel	Metalik Gri	POLONYA	239.000	02.2020	04.2020	2020
+29	30	2	6	29	CARAVELLE	8+1	1879	Otomatik	Metalik Gri	ALMANYA	442.500	07.2020	10.2020	2020
+30	29	2	6	30	AMAROK	5	2261	Otomatik	Beyaz	EKVADOR-ALMANYA	519.500	07.2020	10.2020	2020
+31	30	2	6	31	CRAFTER	19+1	3000	Manuel	Beyaz	POLONYA	340.000	02.2020	05.2020	2020
+32	30	2	7	32	TGE	16+1	3000	Manuel	Beyaz	POLONYA	305.000	02.2020	05.2020	2020
+33	22	1	8	33	MİCRA	5	1065	Otomatik	Beyaz	FRANSA	193.600	08.2020	08.2020	2020
+34	28	1	8	34	QASHQAI	5	1407	Otomatik	Kırmızı	İNGİLTERE	322.800	09.2020	10.2020	2020
+35	28	1	8	35	X-TRAIL	5	1580	Otomatik	Beyaz	JAPONYA	406.900	10.2020	10.2020	2020
+36	29	2	8	36	NAVARA	5	2050	Otomatik	Beyaz	ARJANTİN	290.400	03.2020	08.2020	2020
+45	29	1	8	35	sdfsf	4	1233	afs	asfa	akaka	100.000	11.2020	11.2020	2020
+\.
+
+
+--
+-- TOC entry 3155 (class 0 OID 41820)
+-- Dependencies: 217
+-- Data for Name: aracdegisikligiizle; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.aracdegisikligiizle (arac_no, eski_model_yil, yeni_model_yil) FROM stdin;
+2	2019	2021
+45	2019	2020
+\.
+
+
+--
+-- TOC entry 3146 (class 0 OID 33133)
+-- Dependencies: 208
+-- Data for Name: aracmarka; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.aracmarka (marka_no, marka_ad) FROM stdin;
+1	AUDİ
+2	SKODA
+3	SEAT
+4	VOLVO
+5	VOLKSWAGEN BİNEK
+6	VOLKSWAGEN TİCARİ
+7	MAN
+8	NİSSAN
+9	TOYOTA
+\.
+
+
+--
+-- TOC entry 3139 (class 0 OID 32956)
+-- Dependencies: 201
+-- Data for Name: aracmodel; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.aracmodel (model_no, marka_no, model_ad) FROM stdin;
+1	1	A1
+2	1	A3
+3	1	A4
+4	1	A5
+5	1	A6
+6	1	A7
+7	1	A8
+8	2	SCALA
+9	2	SUPERB
+10	2	KAMIQ
+11	2	KAROQ
+12	2	KODIAQ
+13	3	IBİZA
+14	3	LEON
+15	3	ARONA
+16	3	ATECA
+17	4	S90
+18	4	XC40
+19	4	XC60
+20	4	XC90
+21	5	POLO
+22	5	GOLF
+26	5	TOUAREG
+27	6	CADDY
+28	6	TRANSPORTER
+29	6	CARAVELLE
+30	6	AMAROK
+31	6	CRAFTER
+23	5	PASSAT
+24	5	T-ROC
+25	5	TİGUAN
+32	7	TGE
+33	8	MİCRA
+34	8	QASHQAI
+35	8	X-TRAIL
+36	8	NAVARA
+\.
+
+
+--
+-- TOC entry 3138 (class 0 OID 32942)
+-- Dependencies: 200
+-- Data for Name: aractur; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.aractur (arac_tur_no, arac_tur_ad) FROM stdin;
+21	Sedan
+22	Hatchback 5 Kapı
+23	Hatchback 3 Kapı
+25	Crossover
+26	Station Wagon
+27	MPV
+28	SUV
+29	PİCK-UP
+30	Minivan-Panelvan-Minibüs
+24	Cabrio
+\.
+
+
+--
+-- TOC entry 3140 (class 0 OID 32961)
+-- Dependencies: 202
+-- Data for Name: aracyakit; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.aracyakit (yakit_no, yakit_ad) FROM stdin;
+1	Benzin
+2	Dizel
+3	Elektrik
+4	Hybrid
+6	Benzin/Lpg
+\.
+
+
+--
+-- TOC entry 3144 (class 0 OID 33021)
+-- Dependencies: 206
+-- Data for Name: bayi; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.bayi (id, arac_no, stok_no, satislar_no, personel_id, randevu_no, sehir, bayi_bolge_no, bayi_bolge_ad, bayi_ad) FROM stdin;
+1	10	8	51	2	1	BURSA	1	MARMARA	SERTEPE
+2	19	14	52	5	2	İZMİR	3	EGE	OTOKOÇ
+\.
+
+
+--
+-- TOC entry 3150 (class 0 OID 33195)
+-- Dependencies: 212
+-- Data for Name: danisman; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.danisman (personel_id, ad, soyad, personel_tip_no, personel_tip_ad, ucret, firma_no, danisman_no) FROM stdin;
+2	ALİ	AYHAN	1	DANIŞMAN	5.500	560	1234
+\.
+
+
+--
+-- TOC entry 3153 (class 0 OID 41622)
+-- Dependencies: 215
+-- Data for Name: danismanlikfirmasi; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.danismanlikfirmasi (firma_no, firma_ad, firma_adres) FROM stdin;
+560	DEFGĞHIi	İSTANBUL CADDESİ NO: 61 AKYOL İŞ HANI YALOVA/MERKEZ
+\.
+
+
+--
+-- TOC entry 3152 (class 0 OID 41586)
+-- Dependencies: 214
+-- Data for Name: gelirgider; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.gelirgider (id, aylikgelir, yillikgelir, aylikgider, yillikgider, ayliknetkar, yilliknetkar) FROM stdin;
+11	5430000	65160000	708000	8496000	4722000	56664000
+12	600000	7200000	347000	4164000	253000	3036000
+13	540000	6480000	138000	1656000	402000	4824000
+14	2070000	24840000	548000	6576000	1522000	18264000
+15	2210000	26520000	26000	312000	2184000	26208000
+16	1260000	15120000	40000	480000	1220000	14640000
+17	9410000	112920000	402000	4824000	9008000	108096000
+18	7320000	87840000	495000	5940000	6825000	81900000
+19	9610000	115320000	76000	912000	9534000	114408000
+20	9620000	115440000	299000	3588000	9321000	111852000
+21	2900000	34800000	86000	1032000	2814000	33768000
+\.
+
+
+--
+-- TOC entry 3148 (class 0 OID 33185)
+-- Dependencies: 210
+-- Data for Name: kadrolu; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.kadrolu (personel_id, ad, soyad, personel_tip_no, personel_tip_ad, ucret, kadro_no) FROM stdin;
+3	KADİR	AKY	2	KADROLU	7.500	2345
+4	ÖMER	AKY	2	KADROLU	8.000	2346
+6	AYSE	AKY	2	KADROLU	8.500	2348
+5	HACER	AKYOL	2	KADROLU	9.000	2347
+\.
+
+
+--
+-- TOC entry 3147 (class 0 OID 33180)
+-- Dependencies: 209
+-- Data for Name: personel; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.personel (personel_id, ad, soyad, personel_tip_no, personel_tip_ad, ucret) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3156 (class 0 OID 41844)
+-- Dependencies: 218
+-- Data for Name: randevu; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.randevu (randevu_no, arac_no, marka_ad, model_ad, ad, soyad, telefon_numarasi) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3145 (class 0 OID 33059)
+-- Dependencies: 207
+-- Data for Name: satislar; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.satislar (satislar_no, arac_no, arac_tur_ad, marka_ad, model_ad, arac_fiyat, satilan_arac_model_adet, toplam_satis_tutar, gelir_gider_id) FROM stdin;
+51	10	SUV	SKODA	KAMIQ	307900	5	1539500	15
+52	19	SUV	VOLVO	XC60	779350	8	6234800	14
+53	33	Hatchback 5 Kapı	NİSSAN	MİCRA	193600	20	3872000	13
+54	31	Minivan-Panelvan-Minibüs	VOLKSWAGEN TİCARİ	CRAFTER	340000	11	3740000	12
+55	36	PİCK-UP	NİSSAN	NAVARA	290400	9	2613600	11
+\.
+
+
+--
+-- TOC entry 3143 (class 0 OID 33011)
+-- Dependencies: 205
+-- Data for Name: servis; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.servis (servis_no, arac_no, marka_ad, arac_tur_ad, model, renk, yakit_ad, plaka, arac_km_bilgisi, model_yili, servis_ucret_tip_no, servis_ucret_tip_ad, servis_ucret, hasar_kaydi_orani) FROM stdin;
+1	10	SKODA	SUV	KAMIQ	BEYAZ	BENZİN	77AAP761	18000	2020	2	SKODA UCRET	1750	2
+2	19	VOLKSWAGEN BİNEK	Hatchback 5 Kapı	POLO	KIRMIZI	DİZEL	77AS061	101987	2016	5	VW BİNEK UCRET	1895	10
+45	45	ADA	as	asd	asas	dasds	dsadas	123444	2132	2	addsa	1234	2
+\.
+
+
+--
+-- TOC entry 3157 (class 0 OID 41849)
+-- Dependencies: 219
+-- Data for Name: servisrandevu; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.servisrandevu (randevu_no, arac_no, marka_ad, model_ad, ad, soyad, telefon_numarasi, arac_plaka, servis_randevu_tarih) FROM stdin;
+1	10	SKODA	KAMIQ	ADEM	AYHAN	+905343895771	77AAP761	2021-03-06 11:47:16.48
+2	19	VOLVO	XC60	KADİR	AKY	+905343895772	77AAB361	2021-06-25 02:01:34.21
+\.
+
+
+--
+-- TOC entry 3159 (class 0 OID 41917)
+-- Dependencies: 221
+-- Data for Name: soyaddegisikligiizle; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.soyaddegisikligiizle (personel_id, eski_soyad, yeni_soyad, degisiklik_tarihi) FROM stdin;
+45	asdf	afsasf	2020-12-25 15:30:02.217551
+\.
+
+
+--
+-- TOC entry 3149 (class 0 OID 33190)
+-- Dependencies: 211
+-- Data for Name: sozlesmeli; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sozlesmeli (personel_id, ad, soyad, personel_tip_no, personel_tip_ad, ucret, sozlesme_no) FROM stdin;
+1	AHMET	ALAN	3	SÖZLEŞMELİ	4.000	895220
+\.
+
+
+--
+-- TOC entry 3142 (class 0 OID 32995)
+-- Dependencies: 204
+-- Data for Name: stok; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.stok (stok_no, arac_no, arac_tur_no, marka_ad, model_ad, vites_tipi, model_yili, stok_miktari, arac_fiyat, stok_guncelleme_tarihi) FROM stdin;
+1	2	22	AUDİ	A3	OTOMATİK	2020	2	438.560	2020-12-04
+2	3	24	AUDİ	A4	OTOMATİK	2020	6	891.103	2020-12-04
+3	4	21	AUDİ	A6	OTOMATİK	2020	6	1.070.168	2020-12-12
+4	5	22	AUDİ	A7	OTOMATİK	2020	2	1.774.051	2020-12-12
+5	6	21	AUDİ	A8	OTOMATİK	2020	2	2.959.715	2020-12-12
+6	8	22	SKODA	SCALA	OTOMATİK	2020	20	224.900	2020-12-12
+7	9	21	SKODA	SUPERB	OTOMATİK	2020	10	364.900	2020-11-14
+8	10	28	SKODA	KAMIQ	OTOMATİK	2020	25	307.900	2020-11-14
+9	11	28	SKODA	KAROQ	OTOMATİK	2020	5	388.400	2020-11-14
+10	12	28	SKODA	KODIAQ	OTOMATİK	2020	1	889.900	2020-11-14
+11	13	22	SEAT	IBİZA	MANUEL	2020	11	161.500	2020-08-27
+12	15	28	SEAT	ARONA	OTOMATİK	2020	9	231.000	2020-11-14
+13	16	28	SEAT	ATECA	OTOMATİK	2020	7	355.000	2020-12-14
+14	19	28	VOLVO	XC60	OTOMATİK	2020	4	779.350	2020-11-14
+15	21	22	VOLKSWAGEN	POLO	OTOMATİK	2020	10	190.200	2020-10-14
+16	23	21	VOLKSWAGEN	PASSAT	OTOMATİK	2020	16	348.500	2020-12-14
+17	24	28	VOLKSWAGEN	T-ROC	OTOMATİK	2020	8	387.500	2020-12-14
+18	25	28	VOLKSWAGEN	TİGUAN	OTOMATİK	2020	30	435.000	2020-11-14
+19	28	30	VOLKSWAGEN TİCARİ	TRANSPORTER	MANUEL	2020	4	239.000	2020-11-14
+20	31	30	VOLKSWAGEN TİCARİ	CRAFTER	MANUEL	2020	3	340.000	2020-12-14
+21	33	22	NİSSAN	MİCRA	OTOMATİK	2020	21	193.600	2020-10-14
+22	35	28	NİSSAN	X-TRAIL	OTOMATİK	2020	18	406.900	2020-12-14
+\.
+
+
+--
+-- TOC entry 3158 (class 0 OID 41854)
+-- Dependencies: 220
+-- Data for Name: testsurusrandevu; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.testsurusrandevu (randevu_no, arac_no, marka_ad, model_ad, ad, soyad, telefon_numarasi, test_arac_plaka, test_surus_randevu_tarih) FROM stdin;
+11	21	VOLKSWAGEN BİNEK	POLO	ELİF	AKY	+905343895773	77AKY001	2020-12-15 11:00:00
+12	33	NİSSAN	MİCRA	BETÜL	AKY	+905343895774	77AKY017	2020-12-15 14:00:00
+\.
+
+
+--
+-- TOC entry 3160 (class 0 OID 41963)
+-- Dependencies: 222
+-- Data for Name: ykt_dgsk_izle; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ykt_dgsk_izle (eski_yakit_ad, yeni_yakit_ad, guncelleme_tarihi, yakit_no) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3168 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: Satislar_satislarNo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Satislar_satislarNo_seq"', 55, true);
+
+
+--
+-- TOC entry 3169 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: gelirgider_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."gelirgider_ID_seq"', 21, true);
+
+
+--
+-- TOC entry 2968 (class 2606 OID 33137)
+-- Name: aracmarka AracMarka_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.aracmarka
+    ADD CONSTRAINT "AracMarka_pkey" PRIMARY KEY (marka_no);
+
+
+--
+-- TOC entry 2945 (class 2606 OID 32960)
+-- Name: aracmodel AracModel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.aracmodel
+    ADD CONSTRAINT "AracModel_pkey" PRIMARY KEY (model_no);
+
+
+--
+-- TOC entry 2943 (class 2606 OID 32946)
+-- Name: aractur AracTur_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.aractur
+    ADD CONSTRAINT "AracTur_pkey" PRIMARY KEY (arac_tur_no);
+
+
+--
+-- TOC entry 2947 (class 2606 OID 32965)
+-- Name: aracyakit AracYakit_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.aracyakit
+    ADD CONSTRAINT "AracYakit_pkey" PRIMARY KEY (yakit_no);
+
+
+--
+-- TOC entry 2949 (class 2606 OID 32970)
+-- Name: arac Arac_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.arac
+    ADD CONSTRAINT "Arac_pkey" PRIMARY KEY (arac_no);
+
+
+--
+-- TOC entry 2960 (class 2606 OID 33025)
+-- Name: bayi Bayi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bayi
+    ADD CONSTRAINT "Bayi_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2976 (class 2606 OID 33199)
+-- Name: danisman Danisman_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.danisman
+    ADD CONSTRAINT "Danisman_pkey" PRIMARY KEY (personel_id);
+
+
+--
+-- TOC entry 2972 (class 2606 OID 33189)
+-- Name: kadrolu Kadrolu_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.kadrolu
+    ADD CONSTRAINT "Kadrolu_pkey" PRIMARY KEY (personel_id);
+
+
+--
+-- TOC entry 2970 (class 2606 OID 33184)
+-- Name: personel Personel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.personel
+    ADD CONSTRAINT "Personel_pkey" PRIMARY KEY (personel_id);
+
+
+--
+-- TOC entry 2983 (class 2606 OID 41848)
+-- Name: randevu Randevuu_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.randevu
+    ADD CONSTRAINT "Randevuu_pkey" PRIMARY KEY (randevu_no);
+
+
+--
+-- TOC entry 2966 (class 2606 OID 41667)
+-- Name: satislar Satislar_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.satislar
+    ADD CONSTRAINT "Satislar_pkey" PRIMARY KEY (satislar_no);
+
+
+--
+-- TOC entry 2985 (class 2606 OID 41853)
+-- Name: servisrandevu ServisRandevu_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.servisrandevu
+    ADD CONSTRAINT "ServisRandevu_pkey" PRIMARY KEY (randevu_no);
+
+
+--
+-- TOC entry 2958 (class 2606 OID 33015)
+-- Name: servis Servis_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.servis
+    ADD CONSTRAINT "Servis_pkey" PRIMARY KEY (servis_no);
+
+
+--
+-- TOC entry 2974 (class 2606 OID 33194)
+-- Name: sozlesmeli Sozlesmeli_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sozlesmeli
+    ADD CONSTRAINT "Sozlesmeli_pkey" PRIMARY KEY (personel_id);
+
+
+--
+-- TOC entry 2955 (class 2606 OID 32999)
+-- Name: stok Stok_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stok
+    ADD CONSTRAINT "Stok_pkey" PRIMARY KEY (stok_no);
+
+
+--
+-- TOC entry 2987 (class 2606 OID 41858)
+-- Name: testsurusrandevu TestSurusRandevu_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.testsurusrandevu
+    ADD CONSTRAINT "TestSurusRandevu_pkey" PRIMARY KEY (randevu_no);
+
+
+--
+-- TOC entry 2981 (class 2606 OID 41626)
+-- Name: danismanlikfirmasi danismanlikfirmasi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.danismanlikfirmasi
+    ADD CONSTRAINT danismanlikfirmasi_pkey PRIMARY KEY (firma_no);
+
+
+--
+-- TOC entry 2979 (class 2606 OID 41591)
+-- Name: gelirgider gelirgider_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.gelirgider
+    ADD CONSTRAINT gelirgider_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2956 (class 1259 OID 33005)
+-- Name: fki_aracNo; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_aracNo" ON public.stok USING btree (arac_no);
+
+
+--
+-- TOC entry 2977 (class 1259 OID 33207)
+-- Name: fki_firmaNo; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_firmaNo" ON public.danisman USING btree (firma_no);
+
+
+--
+-- TOC entry 2950 (class 1259 OID 32988)
+-- Name: fki_markaNo; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_markaNo" ON public.arac USING btree (marka_no);
+
+
+--
+-- TOC entry 2951 (class 1259 OID 32994)
+-- Name: fki_modelNo; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_modelNo" ON public.arac USING btree (model_no);
+
+
+--
+-- TOC entry 2961 (class 1259 OID 41724)
+-- Name: fki_personelID; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_personelID" ON public.bayi USING btree (personel_id);
+
+
+--
+-- TOC entry 2962 (class 1259 OID 41718)
+-- Name: fki_satislarNo; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_satislarNo" ON public.bayi USING btree (satislar_no);
+
+
+--
+-- TOC entry 2963 (class 1259 OID 33042)
+-- Name: fki_servisNo; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_servisNo" ON public.bayi USING btree (randevu_no);
+
+
+--
+-- TOC entry 2964 (class 1259 OID 33036)
+-- Name: fki_stokNo; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_stokNo" ON public.bayi USING btree (stok_no);
+
+
+--
+-- TOC entry 2952 (class 1259 OID 32976)
+-- Name: fki_turNo; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_turNo" ON public.arac USING btree (arac_tur_no);
+
+
+--
+-- TOC entry 2953 (class 1259 OID 32982)
+-- Name: fki_yakitNo; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_yakitNo" ON public.arac USING btree (yakit_no);
+
+
+--
+-- TOC entry 3005 (class 2620 OID 41826)
+-- Name: arac aracyildegistiginde; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER aracyildegistiginde BEFORE UPDATE ON public.arac FOR EACH ROW EXECUTE FUNCTION public.modelyildegisikligi();
+
+
+--
+-- TOC entry 3006 (class 2620 OID 41843)
+-- Name: aracmarka markakayitkontrol; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER markakayitkontrol BEFORE INSERT OR UPDATE ON public.aracmarka FOR EACH ROW EXECUTE FUNCTION public.marka_ekle();
+
+
+--
+-- TOC entry 3007 (class 2620 OID 41921)
+-- Name: kadrolu soyadDegistiginde; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "soyadDegistiginde" BEFORE UPDATE ON public.kadrolu FOR EACH ROW EXECUTE FUNCTION public.soyad_degisikligi();
+
+
+--
+-- TOC entry 3004 (class 2620 OID 41967)
+-- Name: aracyakit turDegistiginde; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "turDegistiginde" BEFORE UPDATE ON public.aracyakit FOR EACH ROW EXECUTE FUNCTION public."yktDgsk"();
+
+
+--
+-- TOC entry 2993 (class 2606 OID 33000)
+-- Name: stok aracNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stok
+    ADD CONSTRAINT "aracNo" FOREIGN KEY (arac_no) REFERENCES public.arac(arac_no) NOT VALID;
+
+
+--
+-- TOC entry 2994 (class 2606 OID 33016)
+-- Name: servis aracNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.servis
+    ADD CONSTRAINT "aracNo" FOREIGN KEY (arac_no) REFERENCES public.arac(arac_no) NOT VALID;
+
+
+--
+-- TOC entry 3000 (class 2606 OID 41661)
+-- Name: satislar aracNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.satislar
+    ADD CONSTRAINT "aracNo" FOREIGN KEY (arac_no) REFERENCES public.arac(arac_no) NOT VALID;
+
+
+--
+-- TOC entry 2995 (class 2606 OID 41703)
+-- Name: bayi aracNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bayi
+    ADD CONSTRAINT "aracNo" FOREIGN KEY (arac_no) REFERENCES public.arac(arac_no) NOT VALID;
+
+
+--
+-- TOC entry 3003 (class 2606 OID 41983)
+-- Name: randevu aracNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.randevu
+    ADD CONSTRAINT "aracNo" FOREIGN KEY (arac_no) REFERENCES public.arac(arac_no) NOT VALID;
+
+
+--
+-- TOC entry 2990 (class 2606 OID 33006)
+-- Name: arac aracTurNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.arac
+    ADD CONSTRAINT "aracTurNo" FOREIGN KEY (arac_tur_no) REFERENCES public.aractur(arac_tur_no) NOT VALID;
+
+
+--
+-- TOC entry 3002 (class 2606 OID 41629)
+-- Name: danisman firmaNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.danisman
+    ADD CONSTRAINT "firmaNo" FOREIGN KEY (firma_no) REFERENCES public.danismanlikfirmasi(firma_no) NOT VALID;
+
+
+--
+-- TOC entry 3001 (class 2606 OID 41698)
+-- Name: satislar gelirGiderID; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.satislar
+    ADD CONSTRAINT "gelirGiderID" FOREIGN KEY (gelir_gider_id) REFERENCES public.gelirgider(id) NOT VALID;
+
+
+--
+-- TOC entry 2988 (class 2606 OID 33138)
+-- Name: aracmodel markaNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.aracmodel
+    ADD CONSTRAINT "markaNo" FOREIGN KEY (marka_no) REFERENCES public.aracmarka(marka_no) NOT VALID;
+
+
+--
+-- TOC entry 2991 (class 2606 OID 41730)
+-- Name: arac markaNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.arac
+    ADD CONSTRAINT "markaNo" FOREIGN KEY (marka_no) REFERENCES public.aracmarka(marka_no) NOT VALID;
+
+
+--
+-- TOC entry 2989 (class 2606 OID 32989)
+-- Name: arac modelNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.arac
+    ADD CONSTRAINT "modelNo" FOREIGN KEY (model_no) REFERENCES public.aracmodel(model_no) NOT VALID;
+
+
+--
+-- TOC entry 2998 (class 2606 OID 41968)
+-- Name: bayi personelID; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bayi
+    ADD CONSTRAINT "personelID" FOREIGN KEY (personel_id) REFERENCES public.personel(personel_id) NOT VALID;
+
+
+--
+-- TOC entry 2999 (class 2606 OID 41973)
+-- Name: bayi randevuNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bayi
+    ADD CONSTRAINT "randevuNo" FOREIGN KEY (randevu_no) REFERENCES public.randevu(randevu_no) NOT VALID;
+
+
+--
+-- TOC entry 2997 (class 2606 OID 41713)
+-- Name: bayi satislarNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bayi
+    ADD CONSTRAINT "satislarNo" FOREIGN KEY (satislar_no) REFERENCES public.satislar(satislar_no) NOT VALID;
+
+
+--
+-- TOC entry 2996 (class 2606 OID 41708)
+-- Name: bayi stokNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bayi
+    ADD CONSTRAINT "stokNo" FOREIGN KEY (stok_no) REFERENCES public.stok(stok_no) NOT VALID;
+
+
+--
+-- TOC entry 2992 (class 2606 OID 41978)
+-- Name: arac yakitNo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.arac
+    ADD CONSTRAINT "yakitNo" FOREIGN KEY (yakit_no) REFERENCES public.aracyakit(yakit_no) NOT VALID;
+
+
+-- Completed on 2020-12-26 03:09:40
+
+--
+-- PostgreSQL database dump complete
+--
+
