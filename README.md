@@ -1,0 +1,1 @@
+# OTOMOTIV_PROGRAMI_VTYS_PostgreSqlC-
